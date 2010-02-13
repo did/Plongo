@@ -12,6 +12,15 @@ module Plongo
     ## associations ##
     many :elements, :class_name => 'Plongo::Elements::Base', :polymorphic => true
     
+    ## callbacks ##
+    before_save :before_save_elements
+    after_save :after_save_elements
+    before_destroy :before_destroy_elements
+    after_destroy :after_destroy_elements
+    
+    ## validations ##
+    validates_associated :elements
+    
     ## methods ##
     
     def sorted_elements
@@ -35,6 +44,24 @@ module Plongo
           element.attributes = attributes
         end
       end
+    end
+    
+    protected
+    
+    def before_save_elements
+      self.elements.each { |el| el.send(:run_callbacks, :before_save) }
+    end
+
+    def after_save_elements
+      self.elements.each { |el| el.send(:run_callbacks, :after_save) }
+    end
+    
+    def before_destroy_elements
+      self.elements.each { |el| el.send(:run_callbacks, :before_destroy) }
+    end
+
+    def after_destroy_elements
+      self.elements.each { |el| el.send(:run_callbacks, :after_destroy) }
     end
     
   end

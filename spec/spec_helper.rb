@@ -5,13 +5,19 @@ require 'rubygems'
 require 'mocha'
 require 'mongo_mapper'
 
+# require 'carrierwave'
+require 'paperclip'
+require 'support/paperclip'
 require 'plongo'
 require 'spec'
 require 'spec/autorun'
 
 TEST_DIR = File.expand_path(File.dirname(__FILE__) + '/../tmp')
 
-FileUtils.mkdir_p(TEST_DIR) unless File.exist?(TEST_DIR)
+FileUtils.rm_rf(TEST_DIR)
+FileUtils.mkdir_p(TEST_DIR)
+
+RAILS_DEFAULT_LOGGER = Logger.new(File.join(TEST_DIR, 'paperclip.log'))
 
 # I18n.load_path << Dir[File.join(File.dirname(__FILE__), '..', 'config', 'locales', '*.{rb,yml}') ] 
 # I18n.default_locale = :en

@@ -17,14 +17,6 @@ smart_require 'active_support', 'activesupport', '>= 2.3.4'
 smart_require 'action_controller', 'actionpack', '>= 2.3.4'
 smart_require 'action_view', 'actionpack', '>= 2.3.4'
 
-# begin
-#   require File.dirname(__FILE__) + '/../../../../../spec/spec_helper'
-# rescue LoadError => e
-#   puts "******** You need to install rspec in your base app *******"
-#   puts e.message
-#   raise
-# end
-
 MongoMapper.connection = Mongo::Connection.new('127.0.0.1', 27017, {
   :logger => Logger.new(TEST_DIR + '/test.log')
 })

@@ -4,6 +4,7 @@ include ActionView::Helpers
 
 describe 'ContentTagHelper' do
   
+  include Plongo::Rails::BaseViewHelper
   include Plongo::Rails::ContentTagHelper
   
   attr_accessor :output_buffer

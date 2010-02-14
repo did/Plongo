@@ -3,6 +3,7 @@ module Plongo
     
     class Text < Base
 
+      ## attributes ##
       key :value, String, :required => true
      
     end

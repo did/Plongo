@@ -5,7 +5,7 @@ module Plongo
           
       include MongoMapper::EmbeddedDocument
       
-      plugin Plongo::Support::Callbacks
+      plugin Plongo::Plugins::Callbacks
       
       ## attributes ##
       key :key, String, :required => true

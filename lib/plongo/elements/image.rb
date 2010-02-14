@@ -7,10 +7,10 @@ module Plongo
       
       ## behaviours ##
       has_attached_file :source, :styles => { 
-                :thumbnail => ["50x50#", :png], 
-                :cropped => ["100%x100%", :png] 
-              }, 
-              :processors => [:cropper]
+          :thumbnail => ["50x50#", :png], 
+          :cropped => ["100%x100%", :png] 
+        }, 
+        :processors => [:cropper]
       
       ## attributes ##
       key :width, Integer

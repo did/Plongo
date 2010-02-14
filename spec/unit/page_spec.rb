@@ -38,10 +38,10 @@ describe 'Page' do
     page.elements << (element1 = Plongo::Elements::Input.new(:key => 'title', :value => 'a title'))
     page.elements << (element2 = Plongo::Elements::Text.new(:key => 'tagline', :value => 'a tagline', :priority => 10))
     
-    page.element_attributes = [
-      { :id => element1.id, :value => 'new title' },
-      { :id => element2.id, :value => 'new tagline' }
-    ]
+    page.element_attributes = {
+      element1.id => { :value => 'new title' },
+      element2.id => { :value => 'new tagline' }
+    }
     
     page.elements.first.value.should == 'new title'
     page.elements.first._type.should == 'Plongo::Elements::Input'

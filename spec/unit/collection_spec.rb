@@ -30,18 +30,24 @@ describe 'Collection' do
     
     collection.items[0].elements.first._type.should == 'Plongo::Elements::Input'
 
-    collection.item_attributes = [{
-        :id => item_1.id,
-        :element_attributes => [
-          { :id => item_1.elements[0].id, :value => 'new title', :priority => 5 },
-          { :id => item_1.elements[1].id, :value => 'new tagline' }
-        ]
-      }, {
-        :id => item_2.id,
-        :element_attributes => [
-          { :id => item_2.elements[1].id, :value => 'very new tagline' }
-        ]
-      }]
+    collection.item_attributes = {
+      item_1.id => {
+        :element_attributes => {
+          item_1.elements[0].id => { :value => 'new title', :priority => 5 },
+          item_1.elements[1].id => { :value => 'new tagline' }
+        }
+      },
+      item_2.id => {
+        :element_attributes => {
+          item_2.elements[1].id => { :value => 'very new tagline' }
+        }
+      },
+      'NEW_RECORD' => {
+        :name => 'New item'
+      }
+    }
+
+    collection.items.size.should == 3
     
     collection.items[0].elements.first.value.should == 'new title'
     collection.items[0].elements.first.priority.should == 5
@@ -50,6 +56,9 @@ describe 'Collection' do
     collection.items[1].elements.first.value.should == 'a title'
     collection.items[1].elements[1].value.should == 'very new tagline'
     collection.items[1].elements[1]._type.should == 'Plongo::Elements::Text'
+
+    collection.items[2]._id.should != 'NEW_RECORD'
+    collection.items[2].name.should == 'New item'
   end
   
   protected

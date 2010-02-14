@@ -47,10 +47,17 @@ module Plongo
                 
                 @plongo_item = nil # reset it
                 
-                content_tag_string(name, output, options, escape)
+                # if block_called_from_erb?(block)
+                #   concat(output)
+                # else
+                #   output
+                # end
+                puts "[OUTPUT] #{name} / #{output} / #{options}"
+                content_tag_without_plongo(name, output, options, escape)
               end        
             else
-              content_tag_string(name, element.value, options, escape)
+              content_tag_without_plongo(name, element.value, options, escape)
+              # content_tag_string(name, element.value, options, escape)
               # DONE
             end
           else

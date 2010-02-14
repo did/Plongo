@@ -38,17 +38,30 @@ describe 'CollectionItem' do
     item.elements << (element1 = Plongo::Elements::Input.new(:key => 'title', :value => 'a title'))
     item.elements << (element2 = Plongo::Elements::Text.new(:key => 'tagline', :value => 'a tagline', :priority => 10))
     
-    item.element_attributes = [
-      { :id => element1.id, :value => 'new title' },
-      { :id => element2.id, :value => 'new tagline' }
-    ]
+    item.element_attributes = {
+      element1.id => { :value => 'new title' },
+      element2.id => { :value => 'new tagline' },
+      'NEW_RECORD'  => {
+        :type => 'Plongo::Elements::Input',
+        :name => 'Url',
+        :key => 'url',
+        :value => 'an url',
+        :priority => 42
+      }
+    }
     
     item.elements.first.value.should == 'new title'
     item.elements.first._type.should == 'Plongo::Elements::Input'
+
+    item.elements[1].value.should == 'new tagline'
+    item.elements[1]._type.should == 'Plongo::Elements::Text'
+    item.elements[1].priority.should == 10
     
-    item.elements.last.value.should == 'new tagline'
-    item.elements.last._type.should == 'Plongo::Elements::Text'
-    item.elements.last.priority.should == 10
+    item.elements.last._type.should == 'Plongo::Elements::Input'
+    item.elements.last.name.should == 'Url'
+    item.elements.last.key.should == 'url'
+    item.elements.last.value.should == 'an url'
+    item.elements.last.priority.should == 42
   end
   
 end

@@ -30,14 +30,16 @@ module Plongo
           self.elements.detect { |el| el.key == key }
         end
 
-        def element_attributes=(data = [])
+        def element_attributes=(hash = {})
           # based on accepts_nested_attributes_for but in our case just handle updates
-          data.each do |attributes|
+          hash.each_pair do |id, attributes|
             attributes.symbolize_keys!
-
-            if (element = self.elements.detect { |el| el._id.to_s == attributes[:id].to_s })
-              attributes.delete(:id)
-              element.attributes = attributes
+            
+            if (element = self.elements.detect { |el| el._id.to_s == id.to_s })
+              element.attributes = attributes.symbolize_keys
+            else
+              element = attributes.delete(:type).constantize.new(attributes)
+              self.elements << element
             end
           end
         end

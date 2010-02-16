@@ -11,9 +11,9 @@ describe 'ImageTagHelper' do
   
   before(:each) do
     @output_buffer = ''
-    @controller = mock('FakeController')
-    @controller.stubs(:controller_path).returns('pages')
-    @controller.stubs(:action_name).returns('home')
+    @request = mock('FakeRequest')
+    @request.stubs(:request_uri).returns('/')
+    @controller = FakeController.new(@request)
     Plongo::Page.destroy_all
   end    
   
@@ -26,6 +26,8 @@ describe 'ImageTagHelper' do
       image_tag('banner.png', :alt => 'Banner', :plongo_key => 'banner').should == '<img alt="Banner" src="/images/banner.png" />'
     }.should change(Plongo::Page, :count).by(1)
     
+    @controller.send(:save_plongo_pages) # uber important
+    
     page = Plongo::Page.all.last
   
     page.elements.should_not be_empty
@@ -36,6 +38,8 @@ describe 'ImageTagHelper' do
   it 'should accept options' do
     image_tag('banner.png', :plongo => { :key => 'banner', :priority => 42, :name => 'Test' }).should == '<img alt="Banner" src="/images/banner.png" />'
     
+    @controller.send(:save_plongo_pages) # uber important
+    
     page = Plongo::Page.all.last
     page.elements.first.name.should == 'Test'
     page.elements.first.priority.should == 42
@@ -43,7 +47,7 @@ describe 'ImageTagHelper' do
   
   it 'should use an uploaded image' do
     image_tag_with_an_uploaded_file('banner.png', 'picture.png', { :alt => 'Banner', :plongo_key => 'banner' })
-
+    
     output = image_tag('banner.png', :alt => 'Banner', :plongo_key => 'banner')
     output.should match(/\/system\/sources\/[a-zA-F0-9]+\/original\/picture.png/)
   end
@@ -62,6 +66,8 @@ describe 'ImageTagHelper' do
   
   def image_tag_with_an_uploaded_file(name, filename, options = {})
     image_tag('banner.png', options)
+    
+    @controller.send(:save_plongo_pages) # uber important
     
     page = Plongo::Page.find_by_path('pages/home')
     element = page.elements[0]

@@ -35,29 +35,34 @@ describe 'Collection' do
         :element_attributes => {
           item_1.elements[0].id => { :value => 'new title', :priority => 5 },
           item_1.elements[1].id => { :value => 'new tagline' }
-        }
+        },
+        :_position => 2
       },
       item_2.id => {
         :element_attributes => {
           item_2.elements[1].id => { :value => 'very new tagline' }
-        }
+        },
+        :_position => 1
       },
       'NEW_RECORD' => {
-        :name => 'New item'
+        :name => 'New item',
+        :_position => 3
       }
     }
+    
+    collection.send(:sort_items)
 
     collection.items.size.should == 3
-    
-    collection.items[0].elements.first.value.should == 'new title'
-    collection.items[0].elements.first.priority.should == 5
-    collection.items[0].elements.first._type.should == 'Plongo::Elements::Input'
-    
-    collection.items[1].elements.first.value.should == 'a title'
-    collection.items[1].elements[1].value.should == 'very new tagline'
-    collection.items[1].elements[1]._type.should == 'Plongo::Elements::Text'
 
-    collection.items[2]._id.should != 'NEW_RECORD'
+    collection.items[0].elements.first.value.should == 'a title'
+    collection.items[0].elements[1].value.should == 'very new tagline'
+    collection.items[0].elements[1]._type.should == 'Plongo::Elements::Text'
+    
+    collection.items[1].elements.first.value.should == 'new title'
+    collection.items[1].elements.first.priority.should == 5
+    collection.items[1].elements.first._type.should == 'Plongo::Elements::Input'    
+
+    collection.items[2]._id.should_not == 'NEW_RECORD'
     collection.items[2].name.should == 'New item'
   end
   

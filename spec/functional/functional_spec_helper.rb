@@ -1,5 +1,6 @@
 require File.join(File.dirname(__FILE__), '..', 'spec_helper')
 
+require 'spec'
 require 'rubygems'
  
 def smart_require(lib_name, gem_name, gem_version = '>= 0.0.0')
@@ -27,3 +28,27 @@ MongoMapper.database.collection_names.each do |collection|
   MongoMapper.database.collection(collection).drop
 end
 
+
+class FakeController
+  
+  def render; ''; end
+  
+  include Plongo::Rails::BaseController
+  
+  def initialize(request)
+    @request = request
+  end
+  
+  def controller_path
+    'pages'
+  end
+  
+  def action_name
+    'home'
+  end
+  
+  def request
+    @request
+  end
+    
+end

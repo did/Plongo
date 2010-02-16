@@ -11,17 +11,26 @@ TODO
 x modifier element_attributes et item_attributes (id => hash)
 x carousel type => collection
 - page:
- 	- tag pour decrire la page (/path ?)
+ 	- tag pour decrire la page (/path ?) => set_plongo_page 'Home page', 'pages/home'r
 	x url
 	! rails templates ?
 x save page once
-- snippets 
+x snippets 
+	- property shared
+	-> Page est un snippet ou l'inverse ?
+x liens
+	-> <%= plongo_content :key => 'email', :name => 'Admin email address', :type => :input %>
+	-> <%= plongo_content :key => 'body', :name => 'Body of the article', :type => :text %>
+	-> <%= plongo_content :key => 'banner', :name => 'Banner image', :type => :image, :with => 300, :height => 200 %>
 - plongo_helpers
 - tests
-	- position des items
+	x position des items
 	- changer le path d'un plongo content
 	- ajout des pages au pool de pages
 	- plongo_helpers ?
+
+NEW FEATURES:
+- set_plongo_page 'pages/home'
 
 Plongo
 ======
@@ -35,4 +44,4 @@ Example
 Example goes here.
 
 
-Copyright (c) 2010 [name of plugin creator], released under the MIT license
+Copyright (c) 2010 [Did], released under the MIT license

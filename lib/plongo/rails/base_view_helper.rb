@@ -5,9 +5,9 @@ module Plongo
    
       protected
 
-      def add_plongo_element(tag, key, options = {}, &block)
+      def add_plongo_element(tag_or_type, key, options = {}, &block)
         if defined?(@plongo_collection) && !@plongo_collection.nil?
-          element = name_to_plongo_element_klass(tag, &block).new(options.merge(:key => key))
+          element = name_to_plongo_element_klass(tag_or_type, &block).new(options.merge(:key => key))
           @plongo_collection.metadata_keys << element
           
           element
@@ -16,7 +16,7 @@ module Plongo
           container = plongo_container(options[:page])
           
           if (element = container.find_element_by_key(key)).nil?
-            element = name_to_plongo_element_klass(tag, &block).new(options.merge(:key => key))
+            element = name_to_plongo_element_klass(tag_or_type, &block).new(options.merge(:key => key))
             container.elements << element
           else            
             options.delete(:value)
@@ -35,11 +35,16 @@ module Plongo
       def plongo_page(options = nil)
         return @plongo_page if (options.nil? || options.empty?) && defined?(@plongo_page) && @plongo_page
         
+        current_path = File.join(@controller.controller_path, @controller.action_name) 
+        
         page_options = { 
           :name => @controller.action_name,
           :uri  => @controller.request.request_uri,
-          :path => File.join(@controller.controller_path, @controller.action_name)
+          :path => current_path,
+          :shared => false
         }.merge(options || {})
+        
+        page_options[:shared] = true if options && !options[:path].blank? && options[:path] != current_path
         
         page = Plongo::Page.find_by_path(page_options[:path]) || Plongo::Page.create(page_options)
         
@@ -61,7 +66,11 @@ module Plongo
             Plongo::Elements::Text
           end
         else
-          Plongo::Elements::Text
+          begin
+            "Plongo::Elements::#{name.to_s.capitalize}".constantize
+          rescue NameError
+            Plongo::Elements::Text
+          end
         end
       end
    

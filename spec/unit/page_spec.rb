@@ -3,7 +3,8 @@ require File.expand_path(File.dirname(__FILE__) + '/unit_spec_helper')
 describe 'Page' do
   
   it 'should be valid' do
-    Plongo::Page.new(:name => 'Home page', :path => 'pages/home').should be_valid
+    (page = Plongo::Page.new(:name => 'Home page', :path => 'pages/home')).should be_valid
+    page.shared.should be_false
   end
   
   it 'should add elements' do

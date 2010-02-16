@@ -21,11 +21,11 @@ module Plongo
             }.merge(plongo_options), &block)
             
             if element.respond_to?(:metadata_keys)
-              puts "collection found !!!"
+              # puts "collection found !!!"
               # dealing with collection type
               
               if element.items.empty?
-                puts "initializing collection.....#{element.inspect}"
+                # puts "initializing collection.....#{element.inspect}"
                 element.metadata_keys = []
                 @plongo_collection = element
                 
@@ -35,15 +35,17 @@ module Plongo
                 
                 output
               else
-                puts "================================================================="
+                # puts "================================================================="
                 output = element.items.inject('') do |output, item|
-                  puts "render item #{item.inspect}"
+                  # puts "render item #{item.inspect}"
                   @plongo_item = item
         
-                  puts "---->" + (foo = capture(&block))
-                  puts "-------------------------------"
-                  output + foo
+                  # puts "---->" + (foo = capture(&block))
+                  # puts "-------------------------------"
+                  output + capture(&block)
                 end
+                
+                output = content_tag_string(name, output, options, escape)
                 
                 @plongo_item = nil # reset it
                 
@@ -52,8 +54,14 @@ module Plongo
                 # else
                 #   output
                 # end
-                puts "[OUTPUT] #{name} / #{output} / #{options}"
-                content_tag_without_plongo(name, output, options, escape)
+                # puts "[OUTPUT] #{name} / #{output} / #{options}"
+                # content_tag_without_plongo(name, output, options, escape)
+                
+                if block_called_from_erb?(block)
+                  concat(output)
+                else
+                  output
+                end
               end        
             else
               content_tag_without_plongo(name, element.value, options, escape)
@@ -75,7 +83,7 @@ module Plongo
               :name => content_or_options_with_block
             }.merge(plongo_options), &block)
             
-            puts "!!! writing #{element.value} !!!"
+            # puts "!!! writing #{element.value} !!!"
 
             # content_tag_without_plongo(name, element.value, options, escape)
             content_or_options_with_block = element.value

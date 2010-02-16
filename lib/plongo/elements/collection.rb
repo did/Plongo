@@ -6,6 +6,18 @@ module Plongo
       ## associations ##
       many :metadata_keys, :class_name => 'Plongo::Elements::Base', :polymorphic => true
       many :items, :class_name => 'Plongo::Elements::CollectionItem'
+      
+      ## callbacks ##
+      before_save :sort_items
+      before_save :delete_items
+      
+      before_save :before_save_items
+      after_save :after_save_items
+      before_destroy :before_destroy_items
+      after_destroy :after_destroy_items
+      
+      ## validations ##
+      validates_associated :items
           
       def item_attributes=(hash = {})
         # based on accepts_nested_attributes_for but in our case just handle updates
@@ -19,10 +31,36 @@ module Plongo
           end
         end
       end
-      
+            
       def sorted_metadata_keys
         self.metadata_keys.sort { |a, b| (a.priority || 99) <=> (b.priority || 99) }
       end    
+      
+      protected
+      
+      def sort_items
+        self.items.sort! { |a, b| a._position <=> b._position }
+      end
+      
+      def delete_items
+        self.items.delete_if { |item| item._delete == true || item._delete == '1' || item._delete == 1 }
+      end
+      
+      def before_save_items
+        self.items.each { |el| el.send(:run_callbacks, :before_save) }
+      end
+
+      def after_save_items
+        self.items.each { |el| el.send(:run_callbacks, :after_save) }
+      end
+
+      def before_destroy_items
+        self.items.each { |el| el.send(:run_callbacks, :before_destroy) }
+      end
+
+      def after_destroy_items
+        self.items.each { |el| el.send(:run_callbacks, :after_destroy) }
+      end
       
     end
     

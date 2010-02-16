@@ -5,9 +5,10 @@ module Plongo
     include MongoMapper::Document
     
     ## attributes ##
-    key :name, :required => true
-    key :path, :required => true
-    key :template, Array
+    key :name, String, :required => true
+    key :uri, String
+    key :path, String, :required => true
+    # key :template, Array
     
     plugin Plongo::Plugins::Collection
 

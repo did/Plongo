@@ -8,13 +8,20 @@ config.gem 'mongo_mapper', :source => 'http://gemcutter.org', :version => '0.7.0
 TODO
 =====
 
-! modifier element_attributes et item_attributes (id => hash)
+x modifier element_attributes et item_attributes (id => hash)
+x carousel type => collection
 - page:
- 	- tag pour decrire la page
-	- url
-	- rails templates ?
-- carousel type
-- snippets
+ 	- tag pour decrire la page (/path ?)
+	x url
+	! rails templates ?
+x save page once
+- snippets 
+- plongo_helpers
+- tests
+	- position des items
+	- changer le path d'un plongo content
+	- ajout des pages au pool de pages
+	- plongo_helpers ?
 
 Plongo
 ======

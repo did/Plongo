@@ -17,7 +17,7 @@ module Plongo
 
             element = add_plongo_element(name, key, {
               :value => content_or_options_with_block, 
-              :name => content_or_options_with_block
+              :name => key.humanize
             }.merge(plongo_options), &block)
             
             if element.respond_to?(:metadata_keys)
@@ -26,12 +26,16 @@ module Plongo
               
               if element.items.empty?
                 # puts "initializing collection.....#{element.inspect}"
-                element.metadata_keys = []
+                # element.metadata_keys = []
                 @plongo_collection = element
                 
                 output = content_tag_without_plongo(name, options, nil, escape, &block)
                 
                 @plongo_collection = nil
+                
+                plongo_page.save! # saving page at this time is required if the collection is used further
+                
+                puts "collection saved !"
                 
                 output
               else
@@ -80,7 +84,7 @@ module Plongo
 
             element = add_plongo_element(name, key, {
               :value => content_or_options_with_block, 
-              :name => content_or_options_with_block
+              :name => key.humanize
             }.merge(plongo_options), &block)
             
             # puts "!!! writing #{element.value} !!!"

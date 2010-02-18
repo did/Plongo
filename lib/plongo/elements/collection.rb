@@ -34,7 +34,11 @@ module Plongo
             
       def sorted_metadata_keys
         self.metadata_keys.sort { |a, b| (a.priority || 99) <=> (b.priority || 99) }
-      end    
+      end
+      
+      def find_metadata_key_by_key(key)
+        self.metadata_keys.detect { |el| el.key == key }
+      end
       
       protected
       

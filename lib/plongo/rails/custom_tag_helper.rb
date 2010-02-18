@@ -10,6 +10,8 @@ module Plongo
         
         if element.respond_to?(:source)
           element.source? ? element.url : element.value 
+        elsif element.respond_to?(:items)
+          element.items
         else
           element.value
         end

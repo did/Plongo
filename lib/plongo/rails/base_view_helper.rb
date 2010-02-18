@@ -6,9 +6,15 @@ module Plongo
       protected
 
       def add_plongo_element(tag_or_type, key, options = {}, &block)
-        if defined?(@plongo_collection) && !@plongo_collection.nil?
-          element = name_to_plongo_element_klass(tag_or_type, &block).new(options.merge(:key => key))
-          @plongo_collection.metadata_keys << element
+        if defined?(@plongo_collection) && !@plongo_collection.nil?          
+          if (element = @plongo_collection.find_metadata_key_by_key(key)).nil?
+            element = name_to_plongo_element_klass(tag_or_type, &block).new(options.merge(:key => key))
+            @plongo_collection.metadata_keys << element
+          else
+            element.attributes = options
+          end
+          
+          puts "adding #{element.inspect} / #{@plongo_collection.metadata_keys.size}"
           
           element
         else

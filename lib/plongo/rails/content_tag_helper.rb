@@ -35,7 +35,7 @@ module Plongo
                 
                 plongo_page.save! # saving page at this time is required if the collection is used further
                 
-                puts "collection saved !"
+                # puts "collection saved !"
                 
                 output
               else

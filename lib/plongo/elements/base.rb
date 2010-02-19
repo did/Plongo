@@ -6,6 +6,7 @@ module Plongo
       include MongoMapper::EmbeddedDocument
       
       plugin Plongo::Plugins::Callbacks
+      plugin Plongo::Plugins::Paperclip
       
       ## attributes ##
       key :key, String, :required => true

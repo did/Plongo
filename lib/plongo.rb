@@ -1,8 +1,8 @@
 $:.unshift File.expand_path(File.dirname(__FILE__))
 
-require 'plongo/support/paperclip'
-require 'plongo/plugins/callbacks'
+require 'plongo/plugins/paperclip'
 require 'plongo/plugins/collection'
+require 'plongo/plugins/callbacks'
 require 'plongo/page'
 require 'plongo/elements/base'
 require 'plongo/elements/input'

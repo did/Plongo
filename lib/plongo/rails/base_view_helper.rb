@@ -14,7 +14,7 @@ module Plongo
             element.attributes = options
           end
           
-          puts "adding #{element.inspect} / #{@plongo_collection.metadata_keys.size}"
+          # puts "adding #{element.inspect} / #{@plongo_collection.metadata_keys.size}"
           
           element
         else

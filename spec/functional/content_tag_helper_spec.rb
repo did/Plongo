@@ -48,7 +48,7 @@ describe 'ContentTagHelper' do
     
     page = Plongo::Page.all.last
     page.elements.size.should == 1
-    page.elements.first.name.should == 'Title goes here'
+    page.elements.first.name.should == 'Title'
     page.elements.first.priority.should == 42
   end
   

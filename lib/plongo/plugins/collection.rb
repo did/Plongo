@@ -38,7 +38,11 @@ module Plongo
             if (element = self.elements.detect { |el| el._id.to_s == id.to_s })
               element.attributes = attributes.symbolize_keys
             else
-              element = attributes.delete(:type).constantize.new(attributes)
+              if attributes.key?(:type)
+                element = attributes[:type].constantize.new(attributes)
+              else
+                element = build_element_from_metadata(attributes) # type not present, should be a collection item
+              end
               self.elements << element
             end
           end

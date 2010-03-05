@@ -19,7 +19,7 @@ module Plongo
       key :source_updated_at, Time
 
       ## validations ##
-      validates_attachment_content_type :source, :content_type => ['image/jpeg', 'image/png', 'image/jpg', 'image/gif']
+      validates_attachment_content_type :source, :content_type => %r{image/}
       
       ## methods ##
       

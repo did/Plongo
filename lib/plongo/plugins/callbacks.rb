@@ -9,6 +9,7 @@ module Plongo
           include ActiveSupport::Callbacks
 
           define_callbacks(
+            :after_validation,
             :before_save, :after_save,
             :before_destroy, :after_destroy
           )

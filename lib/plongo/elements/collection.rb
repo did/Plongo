@@ -27,7 +27,8 @@ module Plongo
           if (item = self.items.detect { |item| item._id.to_s == id.to_s })
             item.attributes = attributes.symbolize_keys
           else
-            self.items << Plongo::Elements::CollectionItem.new(attributes)
+            item = self.items.build
+            item.attributes = attributes
           end
         end
       end

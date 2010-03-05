@@ -25,9 +25,9 @@ module Plongo
             
           }.merge(plongo_options))
           
-          # puts "*** source = #{element.source.url.inspect}"
+          # puts "*** source = #{element.source.url.inspect} / #{element.source?} / #{element.value}"          
           
-          source = element.source? ? element.url : element.value
+          source = element.source? ? element.url : source
         end
         
         image_tag_without_plongo(source, options)

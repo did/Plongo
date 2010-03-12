@@ -26,7 +26,12 @@ module Plongo
             container.elements << element
           else            
             options.delete(:value)
+            
+            # puts "element = #{element.inspect}; options = #{options.inspect}"
+            
             element.attributes = options
+            
+            # puts "collection = #{@plongo_page.elements.first.inspect}"
           end
         
           element
@@ -45,18 +50,24 @@ module Plongo
         
         page_options = { 
           :name => @controller.action_name,
-          :uri  => @controller.request.request_uri,
+          :uri  => @controller.request.request_uri.gsub(/^([a-z0-9A-Z\-_\/]*)(\?.*)?/, '\1'),
           :path => current_path,
           :shared => false
         }.merge(options || {})
         
         page_options[:shared] = true if options && !options[:path].blank? && options[:path] != current_path
         
-        page = Plongo::Page.find_by_path(page_options[:path]) || Plongo::Page.create(page_options)
-        
+        if (page = Plongo::Page.find_by_path(page_options[:path])).nil?
+          page = Plongo::Page.create(page_options)
+        else
+          page.attributes = page_options
+        end
+
+        # puts "appending page ? #{(options.nil? || options.empty? || options.key?(:path))}"
+
         @controller.send(:append_plongo_page, page)
         
-        @plongo_page = page if (options.nil? || options.empty?)
+        @plongo_page = page #if (options.nil? || options.empty? || options.key?(:path))
         
         page
       end

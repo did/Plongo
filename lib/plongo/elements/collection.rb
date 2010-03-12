@@ -7,6 +7,9 @@ module Plongo
       many :metadata_keys, :class_name => 'Plongo::Elements::Base', :polymorphic => true
       many :items, :class_name => 'Plongo::Elements::CollectionItem'
       
+      ## attributes
+      key :highlight
+      
       ## callbacks ##
       before_save :sort_items
       before_save :delete_items

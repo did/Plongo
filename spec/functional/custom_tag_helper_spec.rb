@@ -49,5 +49,5 @@ describe 'CustomTagHelper' do
     output = plongo_content('banner', :image, { :value => 'banner.jpg' })
     output.should match(/\/system\/sources\/[a-zA-F0-9]+\/cropped\/picture.png/)
   end
-
+  
 end

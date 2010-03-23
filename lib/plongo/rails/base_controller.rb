@@ -24,7 +24,12 @@ module Plongo
       end
       
       def append_plongo_page(page)
-        ((@plongo_pages ||= []) << page).uniq!
+        @plongo_pages ||= []
+        if existing_page = @plongo_pages.find { |p| p.path == page.path }
+          existing_page.attributes = page.attributes
+        else
+          @plongo_pages << page
+        end
       end
       
     end

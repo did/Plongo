@@ -11,6 +11,7 @@ require 'support/paperclip'
 require 'plongo'
 require 'spec'
 require 'spec/autorun'
+require 'action_controller'
 
 TEST_DIR = File.expand_path(File.dirname(__FILE__) + '/../tmp')
 

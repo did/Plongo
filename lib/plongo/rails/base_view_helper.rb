@@ -58,9 +58,10 @@ module Plongo
         page_options[:shared] = true if options && !options[:path].blank? && options[:path] != current_path
         
         if (page = Plongo::Page.find_by_path(page_options[:path])).nil?
-          page = Plongo::Page.create(page_options)
+          page = Plongo::Page.new(page_options)
         else
-          page.attributes = page_options
+          # puts "page_options = #{page_options.inspect}"
+          page.attributes = page_options unless options.nil?
         end
 
         # puts "appending page ? #{(options.nil? || options.empty? || options.key?(:path))}"

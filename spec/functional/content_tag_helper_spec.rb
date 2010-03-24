@@ -27,13 +27,13 @@ describe 'ContentTagHelper' do
   it 'should store a new element for the current page if passing the right option' do
     lambda {
       content_tag(:h1, 'Title goes here', :plongo_key => 'title').should == '<h1>Title goes here</h1>'
+      @controller.send(:save_plongo_pages)
     }.should change(Plongo::Page, :count).by(1)
     
     lambda {
       content_tag(:h1, 'It does not matter', :plongo_key => 'title').should == '<h1>Title goes here</h1>'
+      @controller.send(:save_plongo_pages)
     }.should_not change(Plongo::Page, :count).by(1)
-  
-    @controller.send(:save_plongo_pages) # uber important
   
     page = Plongo::Page.all.last
   

@@ -26,7 +26,7 @@ development:
   timeout: 5000
   mongodb:
     host: localhost
-    database: &lt;your database name&gt;_development
+    database: <your database name>_development
 </pre>
 
 Create a file mongodb.rb and put it into the config/initializers folder
@@ -35,6 +35,20 @@ Create a file mongodb.rb and put it into the config/initializers folder
 cfg = Rails.configuration.database_configuration[RAILS_ENV]['mongodb']
 MongoMapper.connection = Mongo::Connection.new(cfg['host'])
 MongoMapper.database = cfg['database']
+</pre>
+
+Do not forget to update your config.rb file by adding reference to new gems
+
+<pre>
+	config.gem 'mongo',        :source => 'http://gemcutter.org'
+  config.gem 'mongo_ext',    :source => 'http://gemcutter.org', :lib => false
+  config.gem 'mongo_mapper', :source => 'http://gemcutter.org', :version => '0.7.0'
+</pre>
+
+Finally, generate back-office interface (for now, it is installed in admin/)
+
+<pre>
+./script/generate plongo_admin
 </pre>
 
 h2. How it works ?

@@ -52,3 +52,7 @@ class FakeController
   end
     
 end
+
+module ApplicationHelper
+  
+end

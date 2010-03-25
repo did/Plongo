@@ -26,3 +26,5 @@ RAILS_DEFAULT_LOGGER = Logger.new(File.join(TEST_DIR, 'paperclip.log'))
 Spec::Runner.configure do |config|
   config.mock_with :mocha
 end
+
+I18n.locale = 'en'

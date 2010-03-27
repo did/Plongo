@@ -19,7 +19,8 @@ module Plongo
       key :source_updated_at, Time
 
       ## validations ##
-      validates_attachment_content_type :source, :content_type => %r{image/}
+      validates_each :source_content_type, :logic => lambda { source_content_type =~ %r{image/} }
+      # validates_attachment_content_type :source, :content_type => %r{image/} # => Fixme (Did) old version of paperclip
       
       ## methods ##
       

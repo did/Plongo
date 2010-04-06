@@ -28,4 +28,18 @@ class PlongoAdminGenerator < Rails::Generator::Base
     end
   end
   
+  def assets(manifest)
+    Dir[File.join(source_path('public'), '**/**')].each do |file|
+      if File.directory?(file)
+        manifest.directory relative_public_path(file)
+      else
+        manifest.file relative_public_path(file), relative_public_path(file)
+      end
+    end
+  end
+  
+  def relative_public_path(file)
+    File.join('public', file.gsub(source_path('public'), ''))
+  end
+  
 end

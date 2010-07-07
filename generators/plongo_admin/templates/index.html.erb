@@ -1,0 +1,26 @@
+<%% title 'Listing pages' %>
+
+<%% if @pages.empty? %>	
+	<p class="empty">No pages found</p>
+<%% else %>
+	<table id="pages" class="list">
+		<tr>
+			<th>Name</th>
+			<th>Uri</th>
+			<th>View</th>
+			<th class="actions">&nbsp;</th>
+		</tr>
+		<%% @pages.each do |page| %>
+			<tr id="page-<%%= page.id %>" class="<%%= cycle('odd', 'even') %>">
+				<td class="name"><%%= page.name %></td>
+				<td class="path"><%%= page.uri %></td>
+				<td class="path"><%%= page.path %></td>
+				<td class="actions">
+					<%%= link_to 'Edit', edit_admin_page_url(page) %>
+					&nbsp;
+					<%%= link_to 'Delete', admin_page_url(page), :method => 'delete', :confirm => 'Are you sure ?' %>
+				</td>
+			</tr>
+		<%% end %>	
+	</table>
+<%% end %>

@@ -1,0 +1,128 @@
+h1. Plongo
+
+Super simple CMS brick powered by Mongodb. 
+The aim is to define in the view the way the administration interface will be in order to edit the page content.
+For now, that's more or less a proof of concept. 
+
+h2. Pre-requisities
+
+Mongodb
+
+h2. Installation
+
+For now, only installation as a plugin is available.
+
+<pre>
+script/plugin install git://github.com/did/plongo.git
+</pre>
+
+Then, edit your database.yml and modify all your environments like this
+
+<pre>
+development:
+  adapter: sqlite3
+  database: db/development.sqlite3
+  pool: 5
+  timeout: 5000
+  mongodb:
+    host: localhost
+    database: <your database name>_development
+</pre>
+
+Create a file mongodb.rb and put it into the config/initializers folder
+
+<pre>
+cfg = Rails.configuration.database_configuration[RAILS_ENV]['mongodb']
+MongoMapper.connection = Mongo::Connection.new(cfg['host'])
+MongoMapper.database = cfg['database']
+</pre>
+
+Do not forget to update your config.rb file by adding reference to new gems
+
+<pre>
+	config.gem 'mongo',        :source => 'http://gemcutter.org'
+  config.gem 'mongo_ext',    :source => 'http://gemcutter.org', :lib => false
+  config.gem 'mongo_mapper', :source => 'http://gemcutter.org', :version => '0.7.0'
+</pre>
+
+Finally, generate back-office interface (for now, it is installed in admin/)
+
+<pre>
+./script/generate plongo_admin
+</pre>
+
+h2. How it works ?
+
+A view template is considered as a page in plongo. So once you define a component inside such as a text, a new plongo page is created with default parameters based on the controller / action. Parameters may be overidden.
+Each page is unique thanks to its path (&lt;controller&gt;/&lt;action&gt;).
+
+h2. Usage
+
+Plongo comes with some useful view helpers.
+
+h3. Simple text
+
+<pre>
+<%= content_tag :h2, 'A title by default', :plongo => { :key => 'title', :name => 'Page title', :priority => 1 } %>
+</pre>
+
+will display a h2 tag and the content will be editable thru a back-office interface (in progress)
+
+_Note: priority gives the position of the element in the back-office interface.
+
+<pre>
+<%= content_tag :div, 'Lorem ipsum....', :plongo => { :key => 'a_paragraph', :name => 'Main paragraph' } %>
+</pre>
+
+h3. Image
+
+<pre>
+<%= image_tag 'default url', :plongo_key => 'image', :alt => 'Article image', :size => '400x200' %>
+</pre>
+
+will display an image uploaded thru a back-office interface. The uploaded image will also be cropped based on the size attribute. 
+
+h3. List of items
+
+This is problably the most powerful in Plongo. It makes the edition of HTML list super easy. HTML list can be carousel, simple UL list, ...etc.
+
+<pre>
+<% content_tag :ul, :plongo => { :key => 'features', :name => 'List of features', :highlight => 'title' } do %>
+	<li>
+		<%= content_tag :h3, :plongo => { :key => 'title', :name => 'Title of the feature' } %>
+		<div class="image">
+			<%= image_tag 'default url', :plongo_key => 'screenshot', :alt => 'Screenshot of the feature', :size => '100x100' %>
+		</div>
+		<div class="text">
+			<%= plongo_content 'description', :text, :name => 'A description', :value => 'Lorem ipsum....' %>
+		</div>
+	</li>
+<% end %>
+</pre>
+
+The HTML content inside UL is the template for the list. Each item will have the same "layout" (title + image +text)
+
+_note:The ':highlight' attribute defines the property displayed to represent the element in the back-office interface.
+
+h3. Changing page attributes
+
+In some cases, you may want to change page attributes.
+
+<pre>
+<% plongo_page :name => 'Welcome page', :path => '/home' %>
+</pre>
+
+h2. Tests / Bugs / Evolutions
+
+The plugin is fully tests with rspec (unit / functional tests). Into the plugin folder, type 
+
+<pre>
+rake
+</pre>
+
+You may find bugs, sure you will actually. If you have time to investigate and solve them, just apply the classic procedure (fork, fix, test and submit).
+
+For evolutions, you're welcome to suggest your ideas. Contact me at didier at nocoffee dot fr.
+
+
+Copyright (c) 2010 NoCoffee, released under the MIT license

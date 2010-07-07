@@ -24,9 +24,8 @@ describe 'ImageTagHelper' do
   it 'should store a new element for the current page if passing the right option' do
     lambda {
       image_tag('banner.png', :alt => 'Banner', :plongo_key => 'banner').should == '<img alt="Banner" src="/images/banner.png" />'
+      @controller.send(:save_plongo_pages) # uber important      
     }.should change(Plongo::Page, :count).by(1)
-    
-    @controller.send(:save_plongo_pages) # uber important
     
     page = Plongo::Page.all.last
   

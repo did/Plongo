@@ -9,7 +9,7 @@ module Plongo
     key :uri, String
     key :path, String, :required => true
     key :shared, Boolean, :default => false
-    # key :template, Array
+    key :locale, String
     
     plugin Plongo::Plugins::Collection
      

@@ -12,26 +12,17 @@ module Plongo
             @plongo_collection.metadata_keys << element
           else
             element.attributes = options
-          end
-          
-          # puts "adding #{element.inspect} / #{@plongo_collection.metadata_keys.size}"
-          
+          end          
           element
         else
-          # puts "block_given? #{block_given?} / #{key} / #{plongo_container.inspect} / #{options.inspect}"
           container = plongo_container(options[:page])
           
           if (element = container.find_element_by_key(key)).nil?
             element = name_to_plongo_element_klass(tag_or_type, &block).new(options.merge(:key => key))
             container.elements << element
           else            
-            options.delete(:value)
-            
-            # puts "element = #{element.inspect}; options = #{options.inspect}"
-            
+            options.delete(:value)            
             element.attributes = options
-            
-            # puts "collection = #{@plongo_page.elements.first.inspect}"
           end
         
           element
@@ -52,19 +43,17 @@ module Plongo
           :name => @controller.action_name,
           :uri  => @controller.request.request_uri.gsub(/^([a-z0-9A-Z\-_\/]*)(\?.*)?/, '\1'),
           :path => current_path,
-          :shared => false
+          :shared => false,
+          :locale => I18n.locale.to_s
         }.merge(options || {})
         
         page_options[:shared] = true if options && !options[:path].blank? && options[:path] != current_path
         
-        if (page = Plongo::Page.find_by_path(page_options[:path])).nil?
+        if (page = Plongo::Page.find_by_path_and_locale(page_options[:path], page_options[:locale])).nil?
           page = Plongo::Page.new(page_options)
         else
-          # puts "page_options = #{page_options.inspect}"
           page.attributes = page_options unless options.nil?
         end
-
-        # puts "appending page ? #{(options.nil? || options.empty? || options.key?(:path))}"
 
         @controller.send(:append_plongo_page, page)
         

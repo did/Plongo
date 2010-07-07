@@ -1,0 +1,34 @@
+<%% title "Update '#{@page.name}'" %>
+	
+<%% unless @page.errors.empty? %>
+	<div id="page-errors" class="mb10 form-errors last">
+		<p><%%= form_error_message(@page) %></p>
+	</div>
+<%% end %>
+
+<%% form_tag admin_page_url(@page), :class => 'plongo-form', :method => :put, :multipart => true do %>
+
+	<fieldset>
+		<legend>Page title</legend>
+		<ol>
+			<li class="plongo-input">
+				<%%= text_field_tag 'page[name]', @page.name %>
+			</li>
+		</ol>
+	</fieldset>
+
+	<%%= plongo_fields(@page) %>
+	
+	<hr/>
+
+	<fieldset class="buttons">
+		<%%= submit_tag 'Update' %>
+		&nbsp;or&nbsp;
+		<%%= link_to 'back', admin_pages_url %>
+	</fieldset>
+<%% end %>
+
+<%% content_for :head do %>
+	<%%= javascript_include_tag 'admin/plugins/delegate', 'admin/plugins/ocupload', 'admin/plugins/rte', 'admin/plugins/rte.tb', 'admin/plongo' %>
+	<%%= stylesheet_link_tag 'admin/plugins/rte', 'admin/plongo' %>
+<%% end %>

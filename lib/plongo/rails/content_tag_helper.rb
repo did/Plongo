@@ -28,6 +28,7 @@ module Plongo
                 # puts "initializing collection.....#{element.inspect}"
                 # element.metadata_keys = []
                 @plongo_collection = element
+                @plongo_last_item = true
                 
                 output = content_tag_without_plongo(name, options, nil, escape, &block)
                 
@@ -40,13 +41,20 @@ module Plongo
                 output
               else
                 # puts "================================================================="
+                i = 0
                 output = element.items.inject('') do |output, item|
                   # puts "render item #{item.inspect}"
                   @plongo_item = item
+                  @plongo_last_item = (i == (element.items.size - 1))
+                                                      
+                  # puts "i = #{i} / last item ? #{@plongo_last_item.inspect}"
+                  
+                  i += 1
         
                   # puts "---->" + (foo = capture(&block))
                   # puts "-------------------------------"
                   output + capture(&block)
+                  
                 end
                 
                 output = content_tag_string(name, output, options, escape)

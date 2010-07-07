@@ -20,9 +20,8 @@ describe 'CustomTagHelper' do
   it 'should store a new element for the current page if passing the right option' do
     lambda {
       plongo_content('title', :input, { :value => 'Hello world' }).should == 'Hello world'
+      @controller.send(:save_plongo_pages) # uber important
     }.should change(Plongo::Page, :count).by(1)
-    
-    @controller.send(:save_plongo_pages) # uber important
     
     page = Plongo::Page.all.last
   
